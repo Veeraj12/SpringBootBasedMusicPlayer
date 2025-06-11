@@ -10,10 +10,6 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jdk
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Step 2: Run + yt-dlp
-FROM eclipse-temurin:21-jdk
-ENV DEBIAN_FRONTEND=noninteractive
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         python3 \
@@ -30,7 +26,7 @@ RUN apt-get update && \
 
 
 WORKDIR /app
-COPY cookies.txt /app/
+COPY cookies.txt /app/cookies.txt
 COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8027
 ENTRYPOINT ["java", "-jar", "app.jar"]
