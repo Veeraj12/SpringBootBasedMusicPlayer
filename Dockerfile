@@ -1,4 +1,11 @@
-FROM eclipse-temurin:21-jdk
+# Use lightweight JDK image
+FROM openjdk:21-jdk-slim
+
+# Set working directory
 WORKDIR /app
-COPY app.jar .
+
+# Copy the already built JAR into the container
+COPY target/app app.jar
+
+# Run the app
 CMD ["java", "-jar", "app.jar"]
