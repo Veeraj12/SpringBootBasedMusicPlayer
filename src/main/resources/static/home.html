@@ -1,0 +1,41 @@
+<input type="text" id="youtubeUrl" placeholder="Paste YouTube URL">
+<button onclick="fetchInfo()">Get Audio</button>
+
+<div id="result"></div>
+<audio id="audioPlayer" controls style="display:none;"></audio>
+
+<script>
+async function fetchInfo() {
+    const url = document.getElementById("youtubeUrl").value;
+
+    try {
+        const res = await fetch(`/api/info?youtubeUrl=${encodeURIComponent(url)}`);
+        if (!res.ok) throw new Error("Failed to fetch info");
+
+        const data = await res.json();
+
+        console.log("Fetched audio URL:", data.audioUrl);
+
+        document.getElementById("result").innerHTML = `
+            <h3>${data.title}</h3>
+            <img src="${data.thumbnail}" width="200">
+            <p>Uploader: ${data.uploader}</p>
+            <button onclick="playAudio('${data.audioUrl}')">Play</button>
+            <a href="api/stream?url=${encodeURIComponent(data.audioUrl)}" download="song.mp3">
+                <button>Download</button>
+            </a>
+        `;
+    } catch (e) {
+        alert("Error: " + e.message);
+    }
+}
+
+function playAudio(audioUrl) {
+    const player = document.getElementById("audioPlayer");
+    player.src = `/api/stream?url=${encodeURIComponent(audioUrl)}`;
+    player.style.display = 'block';
+    player.play().catch(err => console.error("Playback error:", err));
+}
+
+</script>
+
