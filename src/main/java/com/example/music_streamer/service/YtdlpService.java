@@ -28,14 +28,7 @@ public class YtdlpService {
 
 	        builder.redirectErrorStream(true);
 	        Process process = builder.start();
-		    
-		 // Wait with timeout
-	        boolean finished = process.waitFor(10, java.util.concurrent.TimeUnit.SECONDS);
-	        if (!finished) {
-	            process.destroy();
-	            throw new RuntimeException("yt-dlp timed out");
-	        }
-		    
+		 
 	        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 	        StringBuilder jsonBuilder = new StringBuilder();
 	        String line;
@@ -43,12 +36,18 @@ public class YtdlpService {
 	        while ((line = reader.readLine()) != null) {
 	            // Skip any lines that don't start with '{' (likely warnings)
 	            if (line.trim().startsWith("{")) {
-	                jsonBuilder.append(line);
 	                jsonLine = line.trim();
 	                break; // JSON is usually a single line
 	            }
 	        }
-	       
+	           
+		 // Wait with timeout
+	        boolean finished = process.waitFor(10, java.util.concurrent.TimeUnit.SECONDS);
+	        if (!finished) {
+	            process.destroy();
+	            throw new RuntimeException("yt-dlp timed out");
+	        }
+		   
 
 	        if (jsonLine == null) {
 	            throw new RuntimeException("No valid JSON data found in yt-dlp output.");
