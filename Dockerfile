@@ -17,7 +17,7 @@ RUN apt-get update && \
         ffmpeg \
         curl \
         ca-certificates && \
-    pip3 install --no-cache-dir yt-dlp && \
+    pip3 install --no-cache-dir yt-dlp --break-system-packages && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
