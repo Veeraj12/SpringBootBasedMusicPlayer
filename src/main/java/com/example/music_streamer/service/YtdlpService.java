@@ -12,12 +12,18 @@ import java.io.InputStreamReader;
 public class YtdlpService {
 	public AudioResponse extractAudio(String url) {
 	    try {
-	        ProcessBuilder builder = new ProcessBuilder(
-	                "yt-dlp",
-	                "-j",
-	                "--no-playlist",
-	                url
-	        );
+		    ProcessBuilder pb = new ProcessBuilder(
+		    "yt-dlp",
+		    "--cookies", "/app/cookies.txt",
+		    "-f", "140",
+		    "-j", url
+		);
+	        // ProcessBuilder builder = new ProcessBuilder(
+	        //         "yt-dlp",
+	        //         "-j",
+	        //         "--no-playlist",
+	        //         url
+	        // );
 
 	        builder.redirectErrorStream(true);
 	        Process process = builder.start();
