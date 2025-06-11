@@ -10,6 +10,10 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jdk
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Step 2: Run + yt-dlp
+FROM eclipse-temurin:21-jdk
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         python3 \
@@ -18,8 +22,12 @@ RUN apt-get update && \
         curl \
         ca-certificates && \
     pip3 install --no-cache-dir yt-dlp --break-system-packages && \
+    echo "----- DEBUG: Testing yt-dlp directly -----" && \
+    yt-dlp -f 140 -j "https://www.youtube.com/watch?v=dQw4w9WgXcQ" || true && \
+    echo "----- END DEBUG -----" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
