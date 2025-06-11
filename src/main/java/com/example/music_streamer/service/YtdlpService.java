@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 public class YtdlpService {
 	public AudioResponse extractAudio(String url) {
 	    try {
-		    ProcessBuilder pb = new ProcessBuilder(
+		    ProcessBuilder builder = new ProcessBuilder(
 		    "yt-dlp",
 		    "--cookies", "/app/cookies.txt",
 		    "-f", "140",
