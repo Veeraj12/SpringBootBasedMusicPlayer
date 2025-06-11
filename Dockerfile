@@ -16,6 +16,15 @@ COPY . .
 # Build the application (skip tests to save time)
 RUN mvn clean package -DskipTests
 
+# Step 2: Run - include yt-dlp
+FROM eclipse-temurin:21
+
+# Install Python and yt-dlp
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    pip3 install yt-dlp && \
+    apt-get clean
+
 # 🏃‍♂️ Step 2: Run Stage - Use lightweight JDK to run the JAR
 FROM eclipse-temurin:21-jdk
 
