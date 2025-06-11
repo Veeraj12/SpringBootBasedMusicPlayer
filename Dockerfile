@@ -28,5 +28,5 @@ RUN apt-get update && \
 WORKDIR /app
 COPY cookies.txt /app/cookies.txt
 COPY --from=builder /app/target/*.jar app.jar
-EXPOSE 8027
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
