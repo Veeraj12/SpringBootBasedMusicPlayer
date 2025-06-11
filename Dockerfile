@@ -1,5 +1,5 @@
 # 🛠️ Step 1: Build Stage - Use Maven to build the JAR
-FROM maven:3.9.6-eclipse-temurin-17 AS builder
+FROM maven:3.9.6-eclipse-temurin AS builder
 
 # Set working directory
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # 🏃‍♂️ Step 2: Run Stage - Use lightweight JDK to run the JAR
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
