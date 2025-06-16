@@ -26,7 +26,9 @@ RUN apt-get update && \
 
 
 WORKDIR /app
+ADD https://raw.githubusercontent.com/Veeraj12/SpringBootBasedMusicPlayer/main/cookies.txt /app/cookies.txt
 COPY cookies.txt /app/cookies.txt
+RUN echo "Checking cookies.txt contents:" && cat /app/cookies.txt
 COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
