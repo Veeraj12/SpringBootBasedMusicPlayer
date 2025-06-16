@@ -4,7 +4,7 @@ WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline
 COPY . .
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -X
 
 # Step 2: Run + yt-dlp
 FROM eclipse-temurin:21-jdk
