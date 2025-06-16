@@ -15,8 +15,7 @@ public class YtdlpService {
 		    ProcessBuilder builder = new ProcessBuilder(
 		    "yt-dlp","--dump-json","--no-warnings",
 		    "--cookies", "/app/cookies.txt",
-		    "-j",
-		    "--no-playlist",
+		    "--no-playlist","--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...",
 		    url
 		);
 	        // ProcessBuilder builder = new ProcessBuilder(
@@ -29,32 +28,36 @@ public class YtdlpService {
 	        builder.redirectErrorStream(true);
 	        Process process = builder.start();
 		 
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-	        StringBuilder jsonBuilder = new StringBuilder();
-	        String line;
-	        String jsonLine = null;
-	        while ((line = reader.readLine()) != null) {
-	            // Skip any lines that don't start with '{' (likely warnings)
-	            if (line.trim().startsWith("{")) {
-	                jsonLine = line.trim();
-	                break; // JSON is usually a single line
-	            }
-	        }
-	           
+	       BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		String line;
+		String jsonLine = null;
+		
+		System.out.println("YT-DLP OUTPUT:");
+		while ((line = reader.readLine()) != null) {
+		    System.out.println(line);
+		    if (line.trim().startsWith("{") && jsonLine == null) {
+		        jsonLine = line.trim(); // get the first JSON line
+		    }
+		} 
 		 // Wait with timeout
 	        boolean finished = process.waitFor(10, java.util.concurrent.TimeUnit.SECONDS);
 	        if (!finished) {
 	            process.destroy();
 	            throw new RuntimeException("yt-dlp timed out");
 	        }
-		   
+
+		BufferedReader err = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+		String errLine;
+		System.out.println("YT-DLP ERR:");
+		while ((errLine = err.readLine()) != null) {
+		    System.err.println(errLine);
+		}
 
 	        if (jsonLine == null) {
 	            throw new RuntimeException("No valid JSON data found in yt-dlp output.");
 	        }
-	        
-	        String json = jsonBuilder.toString();
-	        System.out.println("Clean JSON: " + json);
+	
+	       System.out.println("Clean JSON: " + jsonLine);
 
 	        ObjectMapper mapper = new ObjectMapper();
 	        JsonNode root = mapper.readTree(jsonLine);
