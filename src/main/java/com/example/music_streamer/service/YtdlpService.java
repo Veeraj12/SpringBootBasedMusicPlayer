@@ -14,7 +14,7 @@ public class YtdlpService {
 	    try {
 		    ProcessBuilder builder = new ProcessBuilder(
 		    "yt-dlp","--dump-json","--no-warnings",
-		    "--cookies", "/app/cookies.txt",
+		    "--cookies", "/cookies.txt",
 		    "--no-playlist","--user-agent", 
 		    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
 		    url
