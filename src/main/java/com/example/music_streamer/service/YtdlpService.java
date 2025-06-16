@@ -13,7 +13,7 @@ public class YtdlpService {
 	public AudioResponse extractAudio(String url) {
 	    try {
 		    ProcessBuilder builder = new ProcessBuilder(
-		    "yt-dlp",
+		    "yt-dlp","--dump-json","--no-warnings",
 		    "--cookies", "/app/cookies.txt",
 		    "-j",
 		    "--no-playlist",
