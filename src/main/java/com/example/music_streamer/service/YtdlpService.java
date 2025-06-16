@@ -14,7 +14,7 @@ public class YtdlpService {
 	    try {
 		    ProcessBuilder builder = new ProcessBuilder(
 		    "yt-dlp","--dump-json","--no-warnings",
-		    "--cookies", "/cookies.txt",
+		    "--cookies", "/app/cookies.txt",
 		    "--no-playlist","--user-agent", 
 		    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
 		    url
@@ -62,7 +62,11 @@ public class YtdlpService {
 
 	        ObjectMapper mapper = new ObjectMapper();
 	        JsonNode root = mapper.readTree(jsonLine);
-	        
+
+		System.out.println("Reading cookies from: /app/cookies.txt");
+		File cookieFile = new File("/app/cookies.txt");
+		System.out.println("Exists? " + cookieFile.exists());
+		System.out.println("Size: " + cookieFile.length());
 	        // Extract fields
 	        String title = root.get("title").asText();
 	        String uploader = root.get("uploader").asText("");
